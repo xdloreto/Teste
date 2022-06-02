@@ -1,0 +1,107 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.codigos_uteis;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * 
+ *
+ * @author Gustavo Loreto
+ */
+public class ManipulacaodeArquivosNIO {
+
+    public static String LerString(String path) {  // Lê um arquivo e retorna seu conteúdo no formato String.
+            String arquivo = null;
+            Path diretorio = Paths.get(path);
+            try {
+                arquivo = Files.readString(diretorio);
+            } catch (IOException ex) {
+                Logger.getLogger(ManipulacaodeArquivosNIO.class.getName()).log(Level.SEVERE, null, ex);
+//                ex.printStackTrace();
+//                  System.err.println("Erro: " + ex);
+            }
+            return arquivo;
+        }
+
+        public static List<String> LerLinhas(String path) { // Lê um arquivo e retorna seu conteúdo em formato List<String>.
+            List<String> arquivo = null;
+            Path diretorio = Paths.get(path);
+            try {
+                arquivo = Files.readAllLines(diretorio);
+            } catch (IOException ex) {
+                Logger.getLogger(ManipulacaodeArquivosNIO.class.getName()).log(Level.SEVERE, null, ex);
+//                  ex.printStackTrace();
+                }
+            return arquivo;
+        }
+
+        public static Boolean CriarDiretorio(String diretorio) {
+            Boolean confirmacao = false;
+            Path path = Paths.get(diretorio);
+        try {
+            if (Files.notExists(path)) { 
+                Path pasta = Files.createDirectory(path);
+                confirmacao = true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManipulacaodeArquivosNIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return confirmacao;
+    }
+        
+        public static Boolean CriarArquivo(String path) {
+            Boolean confirmacao = false;
+            Path diretorio = Paths.get(path);
+            try {
+                Files.createFile(diretorio);
+                confirmacao = true;
+            } catch (IOException ex) {
+                Logger.getLogger(ManipulacaodeArquivosNIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return confirmacao;
+        }
+        
+        public static Boolean EscreverEmArquivo(String diretorio, String texto) {
+            Boolean confirmacao = false;
+            Path path = Paths.get(diretorio);
+            try {
+                
+                Files.writeString(path, texto);
+                confirmacao = true;
+            } catch (IOException ex) {
+                Logger.getLogger(ManipulacaodeArquivosNIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return confirmacao;
+        }
+            
+        public static Boolean EsvaziarDiretorio(String diretorio) throws IOException {
+            Boolean confirmacao = false;
+            Path path = Paths.get(diretorio);
+            try {
+                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path);
+                for (Path caminho : directoryStream) {
+                Files.delete(caminho);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ManipulacaodeArquivosNIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return confirmacao;
+        }
+        
+        public static void MostrarConteudo(String diretorio) throws IOException {
+        Path path = Paths.get(diretorio);
+        DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path);
+        for (Path caminho : directoryStream) {
+          System.out.println(caminho.getFileName());
+        }
+    }
+}
