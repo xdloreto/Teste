@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+# TO DO
+# OTIMIZAR O CÓDIGO PARA ENTRADA DE GABARITOS OFICIAIS E INDIVIDUAIS.
+
+gabarito_oficial = ""
+acertos = 0
+erros = 0
+questoes_puladas = 0
+questoes_anuladas = 0
+
+# with open("C:/Users/Gustavo Loreto/Documents/SpyderProjects/Códigos/Entrada de Arquivos/Comparação de Gabaritos/Gabarito(2021).txt", "r") as arquivo:
+    # arquivo = arquivo.readlines()
+
+# for elemento in arquivo:
+    # gabarito_oficial += elemento[4]
+
+with open("C:/Users/Gustavo Loreto/Documents/SpyderProjects/Códigos/Entrada de Arquivos/Comparação de Gabaritos/Gabarito(2018).txt", "r") as arquivo:
+    arquivo = arquivo.readlines()
+
+for elemento in arquivo: # Laço que seleciona apenas o caractere que corresponde a alternativa correta da questão e o adiciona a uma string.
+    gabarito_oficial += elemento[4]
+
+# gabarito_individual = input("Insira a cadeia de caracteres que corresponde ao seu gabarito: ")
+# gabarito_individual = "EC0C0BAD0DDD000DCAB0E0EBA000CE00000BADBD00C0A" #ENEM2021
+
+gabarito_individual = "00EACBEBBDADAAD0BDCE0A0AD0ECCCCDBA0E00CB0D0AD" #ENEM2018
+
+
+print("_" * 100)
+
+for indice in range(0, len(gabarito_oficial)): # Laço usado para a comparação dos gabaritos.
+    if indice == gabarito_oficial.find("a"): # O caractere "a" representa uma questão anulada, neste caso o laço não executa nenhuma instrução e avança o indice.
+        questoes_anuladas += 1
+        continue
+
+    elif gabarito_oficial[indice] == gabarito_individual[indice]: # Se os respectivos elementos forem iguais.
+        acertos += 1
+
+    else: # Se os respectivos elementos não forem iguais.
+        if gabarito_individual[indice] == "0": # As questões que o candidato não fez são representadas pelo caractere "0".
+            questoes_puladas += 1
+            continue
+        else: # Se os respectivos elementos não forem iguais, e se o elemento do gabarito individual for diferente de "0", então a questão está errada.
+            erros += 1
+            print("Número da questão errada: ", indice + 136)
+            print("Gabarito Oficial: ({})                 Gabarito Individual: ({})".format(gabarito_oficial[indice], gabarito_individual[indice]))
+            print("_" * 100)
+
+# O bloco seguinte imprime dados relevantes.
+print("\nAcertos: ", acertos)
+print("Erros: ", erros)
+print("Não feitas: ", questoes_puladas)
+print("Anuladas: ", questoes_anuladas)
